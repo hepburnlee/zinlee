@@ -10,6 +10,17 @@
         /* 引入 Zin Lee 的字體和顏色變數 */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         
+        /* 全局 CSS 規則，確保基本佈局和盒模型行為 */
+        *, *::before, *::after {
+            box-sizing: border-box; /* 確保 padding 和 border 不會增加元素總寬度 */
+        }
+
+        html, body {
+            width: 100%; /* 確保 html 和 body 佔滿整個視窗寬度 */
+            overflow-x: hidden; /* 防止內容溢出導致的橫向滾動條 */
+            margin: 0; /* 移除瀏覽器預設的 body 外邊距 */
+        }
+
         :root {
             --dark-blue: #0A192F;
             --medium-blue: #112240;
@@ -35,14 +46,14 @@
             background-color: var(--primary-bg);
             color: var(--text-color-primary);
             line-height: 1.7;
-            margin: 0 auto;
+            /* margin: 0 auto; 已移動到 html, body 規則中 */
             text-align: center; /* 讓整體內容居中 */
         }
         
         .container {
-            max-width: 900px; /* 從 1200px 調整為 900px，使整體內容變窄 */
-            margin: 0 auto;
-            padding: 0 1rem;
+            max-width: 900px; /* 控制整體內容的最大寬度 */
+            margin: 0 auto; /* 讓內容區塊在視窗中居中 */
+            padding: 0 1rem; /* 左右內邊距，防止內容貼邊 */
         }
         
         h1, h2, h3, h4, h5 {
@@ -536,7 +547,7 @@
                     <div>
                         <h3 class="text-xl font-bold accent-text mb-2">學歷 (Education)</h3>
                         <ul class="list-disc pl-5 space-y-1 text-text-color-primary">
-                            <li>國立台灣大學　畜產系</li>
+                            <li>國立台灣大學　畜產學系 (動物科學技術學系)</li>
                             <li>美國波士頓大學　生物資訊研究所（M.S. in Bioinformatics）</li>
                         </ul>
                     </div>
