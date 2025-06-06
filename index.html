@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李姿瑩 Zin Lee - 跨域整合顧問</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 引入 Zin Lee 的字體和顏色變數 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --dark-blue: #0A192F;
+            --medium-blue: #112240;
+            --light-blue: #1E3A5F;
+            --soft-pink: #FF9FB6; /* 主要強調色 */
+            --light-pink: #FFD0DB;
+            --white: #FFFFFF;
+            --light-gray: #E9E9EC;
+            --text-light: #CCD6F6; /* 主要文字顏色 */
+            --text-lighter: #8892B0; /* 輔助文字顏色 */
+
+            /* 根據 Vincent.txt 架構，調整 Zin Lee 的顏色變數 */
+            --primary-bg: var(--dark-blue); /* 主背景色 */
+            --secondary-bg: var(--medium-blue); /* 次要背景色，用於卡片等 */
+            --accent-color: var(--soft-pink); /* 強調色 */
+            --gold-accent: var(--soft-pink); /* 模擬 Vincent 的金色強調色，使用 Zin Lee 的粉色 */
+            --text-color-primary: var(--text-light); /* 主要文字顏色 */
+            --text-color-muted: var(--text-lighter); /* 靜音文字顏色 */
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color-primary);
+            line-height: 1.7;
+            margin: 0 auto;
+            text-align: center; /* 讓整體內容居中 */
+        }
+        
+        .container {
+            max-width: 900px; /* 從 1200px 調整為 900px，使整體內容變窄 */
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Noto Sans TC', sans-serif; /* 統一字體 */
+            font-weight: 700; /* 加粗 */
+        }
+        
+        .accent-text { /* 變更為 accent-text 以符合 Zin Lee 的顏色命名 */
+            color: var(--accent-color);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--accent-color); /* 標題顏色使用強調色 */
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--gold-accent); /* 底部線條顏色 */
+        }
+        
+        /* 模擬 Vincent 的 elegant-card 和 expertise-card */
+        .elegant-card, .expertise-card, .skill-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(145deg, rgba(17, 34, 64, 0.8) 0%, rgba(10, 25, 47, 0.9) 100%); /* Zin Lee 的深藍色漸變 */
+            border: 1px solid rgba(255, 159, 182, 0.2); /* 邊框顏色使用強調色 */
+            border-radius: 0.5rem; /* 圓角 */
+            text-align: left; /* 內容左對齊 */
+        }
+        
+        .elegant-card:hover, .expertise-card:hover, .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(255, 159, 182, 0.2), 0 10px 10px -5px rgba(255, 159, 182, 0.1); /* 陰影顏色 */
+            border: 1px solid rgba(255, 159, 182, 0.4); /* 邊框顏色 */
+        }
+
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timeline-compact {
+            position: relative;
+            padding-left: 30px;
+            text-align: left;
+        }
+        
+        .timeline-compact::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent-color); /* 時間軸線條顏色 */
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--gold-accent); /* 時間軸點顏色 */
+            left: -36px;
+            top: 8px;
+        }
+        
+        .profile-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 4px solid var(--gold-accent); /* 頭像邊框顏色 */
+            box-shadow: 0 0 20px rgba(255, 159, 182, 0.3); /* 頭像陰影顏色 */
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .quote-mark {
+            font-size: 4rem;
+            position: absolute;
+            opacity: 0.1;
+            color: var(--gold-accent); /* 引號顏色 */
+        }
+        
+        .left-quote {
+            top: -20px;
+            left: -10px;
+        }
+        
+        .right-quote {
+            bottom: -40px;
+            right: -10px;
+        }
+        
+        .elegant-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold-accent), transparent); /* 分隔線顏色 */
+            margin: 2rem auto;
+        }
+        
+        .gold-border-left { /* 變更為 accent-border-left */
+            border-left: 3px solid var(--accent-color); /* 左邊框顏色 */
+        }
+        
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--text-color-primary); /* 文字顏色 */
+            border: 1px solid var(--accent-color); /* 邊框顏色 */
+            background-color: transparent; /* 背景透明 */
+        }
+        
+        .tab-btn:hover {
+            border-color: var(--gold-accent); /* 懸停時邊框顏色 */
+            color: var(--gold-accent); /* 懸停時文字顏色 */
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-color); /* 啟用時背景色 */
+            color: var(--primary-bg); /* 啟用時文字顏色 */
+            border-color: var(--accent-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: var(--gold-accent); /* 底部線條顏色 */
+        }
+        
+        .text-align-left {
+            text-align: left;
+        }
+        
+        .text-align-center {
+            text-align: center;
+        }
+        
+        .circle-icon {
+            border: 1px solid white;
+        }
+
+        /* 調整 Zin Lee 原有的卡片樣式以符合新的設計 */
+        .skill-tag {
+            background-color: var(--light-blue);
+            color: var(--text-color-primary);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 4px;
+            border: 1px solid var(--soft-pink);
+        }
+
+        .category-badge {
+            background-color: var(--light-blue);
+            color: var(--text-color-primary);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 4px;
+            border: 1px solid var(--soft-pink);
+        }
+
+        .card-header {
+            background-color: var(--light-blue); /* Zin Lee 原有的卡片頭部顏色 */
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+
+        .btn {
+            background-color: var(--accent-color); /* 按鈕背景色 */
+            color: var(--primary-bg); /* 按鈕文字顏色 */
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: var(--light-pink); /* 懸停時顏色 */
+            border-color: var(--light-pink);
+            transform: translateY(-2px);
+        }
+
+        /* 針對 icon 的額外樣式 */
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background-color: var(--secondary-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            border: 1px solid var(--accent-color);
+        }
+
+        .icon-box i, .icon-box svg {
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+        }
+
+        /* 確保 Zin Lee 的自定義圖標也套用顏色 */
+        .custom-icon svg {
+            color: var(--soft-pink);
+        }
+    </style>
+</head>
+<body class="px-4 py-8">
+    <div class="container">
+        <!-- Header Section -->
+        <header class="mb-12">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/4 mb-8 md:mb-0 md:pr-8 flex justify-center">
+                    <div class="profile-image w-45 h-45 overflow-hidden shadow-xl">
+                        <!-- 使用 Zin Lee 的頭像替代，這裡用一個 SVG 佔位符 -->
+                        <img src="https://ap11.ragic.com/sims/file.jsp?a=zin4a&f=g2b3HB4feX%40ZinLEe.png" alt="Zin Lee 個人照片" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="md:w-3/4 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2">李姿瑩 <span class="accent-text">Zin Lee</span></h1>
+                    <h2 class="text-xl md:text-2xl font-light mb-4 text-text-color-muted">跨域整合顧問 × 系統與流程設計師 × 視覺控實作派</h2>
+                    <div class="elegant-divider w-24 mx-auto md:mx-0 my-4"></div>
+                    <p class="text-lg mb-6 max-w-2xl mx-auto md:mx-0">
+                        擅長從混亂中抽絲剝繭，把需求轉譯為具體流程，
+                        結合自動化、文件結構與視覺設計，打造實用又好懂的解決方案。
+                    </p>
+                    
+                    <!-- Expertise Tabs - 根據 Zin Lee 的「專業主軸」內容調整 -->
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4 mb-6">
+                        <button class="tab-btn active px-5 py-2 rounded-full transition duration-300" data-tab="flow-design">
+                            <i class="fas fa-sitemap mr-2"></i>流程設計
+                        </button>
+                        <button class="tab-btn px-5 py-2 rounded-full transition duration-300" data-tab="hr-consult">
+                            <i class="fas fa-users mr-2"></i>人資顧問
+                        </button>
+                        <button class="tab-btn px-5 py-2 rounded-full transition duration-300" data-tab="visual-app">
+                            <i class="fas fa-palette mr-2"></i>視覺應用
+                        </button>
+                    </div>
+                    
+                    <!-- Tab Content - 對應 Zin Lee 的專業主軸內容 -->
+                    <div class="tab-content active" id="flow-design">
+                        <div class="elegant-card p-6">
+                            <h3 class="text-xl font-bold mb-3 accent-text text-center">流程設計專長</h3>
+                            <p class="mb-4 text-center">擅長從需求釐清階段切入，建立專案流程與邏輯架構。</p>
+                            <p class="mb-4 text-center">重視細節與可執行性，規劃時兼顧目標拆解、節點定義與後續銜接，確保每一步具備明確產出與決策依據。</p>
+                            <p class="text-center">能掌握跨部門協作節奏，並將抽象構想轉化為具體步驟與視覺化內容，提升執行效率與團隊共識。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="hr-consult">
+                        <div class="elegant-card p-6">
+                            <h3 class="text-xl font-bold mb-3 accent-text text-center">人資顧問專長</h3>
+                            <p class="mb-4 text-center">具備實務人資規劃與制度建構經驗，熟悉從組織需求出發，建立可執行且具擴展性的流程與規範。</p>
+                            <p class="mb-4 text-center">能整合招募、異動、排程、考勤、績效與訓練等不同模組，搭配表單與系統流程設計，協助企業優化人力資源管理作業。</p>
+                            <p class="text-center">重視制度落地與跨部門配合，擅長將既有制度與實務操作對齊，強化團隊協作、資訊透明與營運穩定性。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="visual-app">
+                        <div class="elegant-card p-6">
+                            <h3 class="text-xl font-bold mb-3 accent-text text-center">視覺應用專長</h3>
+                            <p class="mb-4 text-center">結合視覺設計能力與系統架構思維，擅長從流程邏輯與內容脈絡中提取關鍵資訊，轉化為清晰易懂的圖像表現。</p>
+                            <p class="mb-4 text-center">能執行簡報設計、資訊圖表、教材製作與品牌視覺規劃，支援專案內外溝通與內容交付。</p>
+                            <p class="text-center">重視設計的功能性與節奏感，確保視覺內容不僅美觀一致，也具備實用性與延展性，提升理解效率與專業印象。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Key Metrics Section - 根據 Zin Lee 的實務經驗調整 -->
+        <section class="mb-16">
+            <div class="elegant-card p-8">
+                <h2 class="section-title text-2xl font-bold mb-8 text-center">關鍵實務成就</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center p-4 border-r border-text-color-muted last:border-r-0">
+                        <div class="text-3xl font-bold accent-text mb-2">20+</div>
+                        <div class="text-sm text-text-color-muted">流程設計專案</div>
+                    </div>
+                    <div class="text-center p-4 border-r border-text-color-muted last:border-r-0">
+                        <div class="text-3xl font-bold accent-text mb-2">10+</div>
+                        <div class="text-sm text-text-color-muted">系統自動化導入</div>
+                    </div>
+                    <div class="text-center p-4 border-r border-text-color-muted last:border-r-0">
+                        <div class="text-3xl font-bold accent-text mb-2">50+</div>
+                        <div class="text-sm text-text-color-muted">視覺文件產出</div>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="text-3xl font-bold accent-text mb-2">15+</div>
+                        <div class="text-sm text-text-color-muted">產業場域經驗</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart4A & M8D Section - 調整為 Zin Lee 的「實務經驗與流程模型」-->
+        <section class="mb-16">
+            <div class="elegant-card p-8">
+                <h2 class="section-title text-2xl font-bold mb-8 text-center">實務經驗與流程模型</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="flex items-center mb-6 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">實務參與與應用經驗</h3>
+                        </div>
+                        <p class="mb-6 text-center">實務執行中常涵蓋從需求整理到交付的完整流程，重點在於分工明確、執行順暢，各階段能有效銜接。</p>
+                        <!-- 修改後的列表結構 -->
+                        <ul class="space-y-4 mb-6">
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-project-diagram accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">流程與專案規劃</p>
+                                    <p class="text-sm text-text-color-muted">從需求釐清到建立邏輯架構</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-file-alt accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">文件與視覺設計</p>
+                                    <p class="text-sm text-text-color-muted">製作交付物，提升溝通效率</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-cogs accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">跨部門協作與優化</p>
+                                    <p class="text-sm text-text-color-muted">確保整體體驗與後續延展性</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="text-center">整體實作以「清楚、順暢、可持續」為原則，確保每階段具備邏輯一致性與交付穩定性。</p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center mb-6 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">流程設計的思考模型</h3>
+                        </div>
+                        <p class="mb-6 text-center">設計流程時，通常會從理解任務目標與使用情境著手，釐清輸入與輸出的關係，再拆解成清晰步驟。</p>
+                        <ul class="space-y-4 mb-6">
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-cubes accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">節點定義與邏輯轉換</p>
+                                    <p class="text-sm text-text-color-muted">確保每個步驟清晰明確</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-paint-brush accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">視覺、資料結構與文件</p>
+                                    <p class="text-sm text-text-color-muted">同步規劃所需呈現方式</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-secondary-bg rounded-lg border border-accent-color">
+                                <div class="w-10 h-10 bg-primary-bg rounded-full flex items-center justify-center mr-4 border border-accent-color">
+                                    <i class="fas fa-code-branch accent-text"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold accent-text">可執行、能溝通、能持續</p>
+                                    <p class="text-sm text-text-color-muted">兼顧細節完整性與使用者理解度</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="text-center">整體設計以「能執行、能溝通、能持續」為原則，兼顧細節完整性與使用者理解度。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Column Section - 調整為 Zin Lee 的「專案展示」-->
+        <div class="grid grid-cols-1 gap-8 mb-16">
+            <!-- Project Showcase -->
+            <section>
+                <div class="elegant-card p-8">
+                    <h2 class="section-title text-2xl font-bold mb-8 text-center">專案展示</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="elegant-card">
+                            <div class="card-header">
+                                <div class="flex items-center">
+                                    <div class="icon-box">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">家事人員排班解決方案</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3 text-text-color-primary">專為家事服務業打造的多角色排班系統，整合家事人員、派工人員與管理者作業流程，透過 LINE 官方帳號作為操作入口，使用者可直接在圖文選單中查詢、登記或異動排班，無需額外安裝系統。</p>
+                                <p class="mb-3 text-text-color-primary">系統支援即時通知、出勤自助登記、彈性支援調整與資料集中管理，並自動統整出勤與時數記錄，有效提升派工效率、資訊透明度與考勤準確性。</p>
+                                <a href="https://make.fan/case-studies/cleaning-team-planner/" class="btn mt-2 px-4 py-2 rounded-md" target="_blank">查看案例</a>
+                            </div>
+                        </div>
+                        
+                        <div class="elegant-card">
+                            <div class="card-header">
+                                <div class="flex items-center">
+                                    <div class="icon-box">
+                                        <i class="fas fa-hotel"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">LINE OA 智慧訂房訂位解決方案</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3 text-text-color-primary">為多場域業者設計的自助預約系統，整合湯屋與餐廳訂位需求，使用者可透過 LINE 官方帳號完成預約、付款、需求填寫與修改，無需額外下載應用程式。</p>
+                                <p class="mb-3 text-text-color-primary">系統自動判斷可預約時間與場域，並支援 AI 對話引導、付款提醒、自動彙整訂單與多單位派送，簡化顧客操作流程並提升管理端掌握度與處理效率。</p>
+                                 <a href="https://make.fan/case-studies/line-oa-booking_n_reservation/" class="btn mt-2 px-4 py-2 rounded-md" target="_blank">查看案例</a>
+                            </div>
+                        </div>
+                        
+                        <div class="elegant-card">
+                            <div class="card-header">
+                                <div class="flex items-center">
+                                    <div class="icon-box">
+                                        <i class="fas fa-users-cog"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">智能人資 × 入離職流程自動化系統</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3 text-text-color-primary">設計橫跨應徵、錄取、到職與離職全流程的自動化邏輯，協助企業簡化人資行政作業、減少錯誤風險，並強化部門間協作效率。</p>
+                                <p class="mb-3 text-text-color-primary">系統涵蓋應徵者資料處理、文件產製、跨部門通知、行事曆提醒與資料表管理，讓 HR 能專注於策略性任務，並提升整體人員進出管理品質。</p>
+                                <a href="https://make.fan/case-studies/smart-hr-system/" class="btn mt-2 px-4 py-2 rounded-md" target="_blank">查看案例</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Team Section - 新增 Zin Lee 的「核心專長」區塊 (現在已移動到此處) -->
+        <section id="skills" class="mb-16">
+            <div class="elegant-card p-8">
+                <h2 class="section-title text-2xl font-bold mb-8 text-center">核心專長</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="p-6 bg-secondary-bg rounded-lg border border-accent-color text-center">
+                        <div class="flex items-center mb-4 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-bezier-curve"></i> <!-- 流程設計 -->
+                            </div>
+                            <h4 class="font-bold">流程規劃</h4>
+                        </div>
+                        <p class="text-text-color-muted">設計與優化工作流程，提升效率與執行力</p>
+                    </div>
+                    <div class="p-6 bg-secondary-bg rounded-lg border border-accent-color text-center">
+                        <div class="flex items-center mb-4 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-comments"></i> <!-- 溝通介面 -->
+                            </div>
+                            <h4 class="font-bold">溝通介面</h4>
+                        </div>
+                        <p class="text-text-color-muted">打造清晰溝通渠道，促進資訊流通與共識</p>
+                    </div>
+                    <div class="p-6 bg-secondary-bg rounded-lg border border-accent-color text-center">
+                        <div class="flex items-center mb-4 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-book"></i> <!-- 知識管理 -->
+                            </div>
+                            <h4 class="font-bold">知識管理</h4>
+                        </div>
+                        <p class="text-text-color-muted">建立系統化知識庫，強化學習與應用能力</p>
+                    </div>
+                    <div class="p-6 bg-secondary-bg rounded-lg border border-accent-color text-center">
+                        <div class="flex items-center mb-4 justify-center">
+                            <div class="icon-box">
+                                <i class="fas fa-handshake"></i> <!-- 整合應用 -->
+                            </div>
+                            <h4 class="font-bold">整合應用</h4>
+                        </div>
+                        <p class="text-text-color-muted">串聯不同工具平台，實現跨域高效整合</p>
+                    </div>
+                </div>
+                
+                <div class="p-6 bg-secondary-bg rounded-lg border border-gold-accent">
+                    <div class="flex items-center mb-4 justify-center">
+                        <div class="icon-box">
+                            <i class="fas fa-star accent-text"></i>
+                        </div>
+                        <h4 class="font-bold text-xl accent-text">我的實作理念</h4>
+                    </div>
+                    <p class="mb-4 text-center">具資訊系統背景與跨產業經驗，擅長從流程設計到視覺輸出，整合技術與應用。</p>
+                    <p class="mb-4 text-center">專注於將複雜需求轉化為清晰可執行的解決方案，重視邏輯連貫與成果落地。</p>
+                    <p class="text-center">透過系統化思維與跨領域整合，優化資訊流與協作節奏，使運作更穩定、更有效率。</p>
+                </div>
+
+                <!-- 新增工作坊實作經驗區塊 -->
+                <div class="p-6 bg-secondary-bg rounded-lg border border-gold-accent mt-8">
+                    <div class="flex items-center mb-4 justify-center">
+                        <div class="icon-box">
+                            <i class="fas fa-chalkboard-teacher accent-text"></i> <!-- 工作坊圖標 -->
+                        </div>
+                        <h4 class="font-bold text-xl accent-text">工作坊實作經驗</h4>
+                    </div>
+                    <p class="mb-4 text-center">參與多場 Smart4A Make Workshop，擔任助教與流程支援角色，</p>
+                    <p class="mb-4 text-center">協助現場操作指導、課程節奏規劃與學習節點設計。</p>
+                    <p class="text-center">製作課後教材，提升教學體驗與資源延續性。強調知識轉譯與實作節奏，協助學員掌握流程邏輯與應用場景。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8">
+            <div class="elegant-divider mb-8"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold mb-2">李姿瑩 <span class="accent-text">Zin Lee</span></h3>
+                    <p class="text-text-color-muted">跨域整合顧問 × 系統與流程設計師 × 視覺控實作派</p>
+                </div>
+                <div class="flex space-x-4">
+                    <!-- 替換為 Zin Lee 的社群連結 -->
+                    <a href="#" class="w-10 h-10 bg-secondary-bg rounded-full flex items-center justify-center hover:bg-accent-color transition duration-300 border border-accent-color">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-secondary-bg rounded-full flex items-center justify-center hover:bg-accent-color transition duration-300 border border-accent-color">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-secondary-bg rounded-full flex items-center justify-center hover:bg-accent-color transition duration-300 border border-accent-color">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 text-text-color-muted text-sm">
+                <p>&copy; 2025 李姿瑩 Zin Lee. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    
+                    // Reset all tabs
+                    tabBtns.forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Activate selected tab
+                    btn.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
